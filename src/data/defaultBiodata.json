@@ -1,0 +1,66 @@
+[
+  {
+    "id": "default-pritu-dubey",
+    "userId": "default-user",
+    "personalInfo": {
+      "fullName": "Pritu Dubey",
+      "dateOfBirth": "2005-03-06",
+      "age": "21",
+      "gender": "Female",
+      "height": "155",
+      "weight": "46",
+      "religion": "Hindu",
+      "caste": "Brahman",
+      "motherTongue": "Hindi",
+      "currentLocation": "Hatheda, Haliya, Lalganj, Mirzapur, UP",
+      "nativePlace": "Hatheda, Mirzapur",
+      "maritalStatus": "Never Married",
+      "phone": "8127448663",
+      "email": "pritud26@gmail.com",
+      "address": "Hatheda, Haliya, Lalganj, Mirzapur, UP (231211)"
+    },
+    "familyInfo": {
+      "fatherName": "VidyaKant Dubey",
+      "fatherOccupation": "Farmer",
+      "motherName": "Nirmala Devi",
+      "motherOccupation": "HouseWife",
+      "siblings": "2 Brothers, I'm the only sister",
+      "familyType": "Joint",
+      "familyStatus": "Middle Class"
+    },
+    "education": {
+      "qualification": "BA",
+      "institution": "panchsheel degree college",
+      "fieldOfStudy": "Geography and Political Science",
+      "yearOfPassing": "2026"
+    },
+    "profession": {
+      "occupation": "Student",
+      "companyName": "N/A",
+      "designation": "N/A",
+      "workLocation": "N/A",
+      "annualIncome": "N/A"
+    },
+    "lifestyle": {
+      "diet": "Vegetarian",
+      "smoking": "No",
+      "drinking": "No",
+      "hobbies": "I love trying new dishes, cooking, stitching (silai), and embroidery (kadhai). I enjoy learning creative household skills and contributing to my family.",
+      "languages": "Hindi, English"
+    },
+    "partnerPreference": {
+      "ageRange": "23-27",
+      "heightRange": "N/A",
+      "education": "Educated",
+      "profession": "I prefer a partner who is professionally stable and engaged in some form of meaningful work or occupation. He should be responsible, hardworking, and capable of managing his personal and family responsibilities. A person who values growth, financial stability, and has a positive approach towards his career.",
+      "location": "Anywhere in India",
+      "otherPreferences": "I am looking for a respectful, understanding, and responsible life partner. Someone who values family, traditions, and maintains a positive outlook towards life. He should treat my parents with the same respect and love as he gives to his own parents. I believe marriage is built on trust, understanding, and mutual support, so I want a partner who communicates openly and stands by me in every phase of life. I prefer someone who is calm-natured, caring, and believes in simple living with strong moral values. A person who understands responsibilities, supports growth, and values relationships."
+    },
+    "additionalInfo": {
+      "aboutMe": "I am a simple, family-oriented girl who believes in respect, honesty, and cultural values. I am currently completing my BA final year and preparing to support my family in the future. I enjoy maintaining a peaceful and positive environment around me. I love trying new dishes, cooking, stitching (silai), and embroidery (kadhai). I enjoy learning creative household skills and contributing to my family. A responsible, understanding, and family-respecting partner who values simplicity, culture, and mutual respect.",
+      "photo": ""
+    },
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  }
+]
+
