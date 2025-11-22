@@ -1,7 +1,7 @@
 import React from 'react'
 import './BiodataView.css'
 
-const BiodataView = ({ biodata, onBack, onEdit, onDelete }) => {
+const BiodataView = ({ biodata, onBack, onEdit, onDelete, currentUser, showBackButton = true }) => {
   if (!biodata) {
     return (
       <div className="empty-state">
@@ -16,17 +16,27 @@ const BiodataView = ({ biodata, onBack, onEdit, onDelete }) => {
   return (
     <div className="biodata-view">
       <div className="view-header">
-        <button className="btn btn-secondary" onClick={onBack}>
-          ← Back to List
-        </button>
-        <div className="view-actions">
-          <button className="btn btn-success" onClick={onEdit}>
-            ✏️ Edit
+        {showBackButton && (
+          <button className="btn btn-secondary" onClick={onBack}>
+            ← Back to List
           </button>
-          <button className="btn btn-danger" onClick={onDelete}>
-            🗑️ Delete
-          </button>
-        </div>
+        )}
+        {!showBackButton && <div></div>}
+        {currentUser && (
+          <div className="view-actions">
+            <button className="btn btn-success" onClick={onEdit}>
+              ✏️ Edit
+            </button>
+            <button className="btn btn-danger" onClick={onDelete}>
+              🗑️ Delete
+            </button>
+          </div>
+        )}
+        {!currentUser && (
+          <div className="view-actions">
+            <p className="guest-edit-hint">💡 Login to edit or manage biodata</p>
+          </div>
+        )}
       </div>
 
       <div className="cv-container">

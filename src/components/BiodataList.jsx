@@ -1,20 +1,22 @@
 import React from 'react'
 import './BiodataList.css'
 
-const BiodataList = ({ biodatas, onEdit, onDelete, onView }) => {
+const BiodataList = ({ biodatas, onEdit, onDelete, onView, currentUser }) => {
   if (biodatas.length === 0) {
     return (
       <div className="empty-state">
         <div className="empty-icon">📄</div>
         <h2>No Biodatas Found</h2>
-        <p>Create your first biodata to get started!</p>
+        <p>{currentUser ? 'Create your first biodata to get started!' : 'No biodata profiles available yet.'}</p>
       </div>
     )
   }
 
   return (
     <div className="biodata-list">
-      <h2 className="list-header">My Biodatas ({biodatas.length})</h2>
+      <h2 className="list-header">
+        {currentUser ? `My Biodatas (${biodatas.length})` : `All Biodatas (${biodatas.length})`}
+      </h2>
       <div className="biodata-grid">
         {biodatas.map((biodata) => (
           <div key={biodata.id} className="biodata-card">
@@ -64,18 +66,22 @@ const BiodataList = ({ biodatas, onEdit, onDelete, onView }) => {
               >
                 👁️ View
               </button>
-              <button 
-                className="btn btn-success btn-sm" 
-                onClick={() => onEdit(biodata.id)}
-              >
-                ✏️ Edit
-              </button>
-              <button 
-                className="btn btn-danger btn-sm" 
-                onClick={() => onDelete(biodata.id)}
-              >
-                🗑️ Delete
-              </button>
+              {currentUser && (
+                <>
+                  <button 
+                    className="btn btn-success btn-sm" 
+                    onClick={() => onEdit(biodata.id)}
+                  >
+                    ✏️ Edit
+                  </button>
+                  <button 
+                    className="btn btn-danger btn-sm" 
+                    onClick={() => onDelete(biodata.id)}
+                  >
+                    🗑️ Delete
+                  </button>
+                </>
+              )}
             </div>
           </div>
         ))}

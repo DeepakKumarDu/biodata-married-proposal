@@ -23,6 +23,13 @@ function App() {
     loadBiodatas()
   }, [])
 
+  useEffect(() => {
+    // Auto-show full view if only 1 biodata exists and not viewing/editing
+    if (biodatas.length === 1 && !viewingId && !showForm && !editingId) {
+      setViewingId(biodatas[0].id)
+    }
+  }, [biodatas.length, viewingId, showForm, editingId])
+
   const loadBiodatas = () => {
     const stored = localStorage.getItem('biodatas')
     if (stored) {
@@ -63,6 +70,10 @@ function App() {
   }
 
   const handleDelete = (id) => {
+    if (!currentUser) {
+      setShowRegister(true)
+      return
+    }
     const biodata = biodatas.find(b => b.id === id)
     if (biodata && biodata.userId !== currentUser.id) {
       alert('You can only delete your own biodata!')
@@ -76,6 +87,10 @@ function App() {
   }
 
   const handleEdit = (id) => {
+    if (!currentUser) {
+      setShowRegister(true)
+      return
+    }
     const biodata = biodatas.find(b => b.id === id)
     if (biodata && biodata.userId !== currentUser.id) {
       alert('You can only edit your own biodata!')
@@ -93,6 +108,10 @@ function App() {
   }
 
   const handleNew = () => {
+    if (!currentUser) {
+      setShowRegister(true)
+      return
+    }
     setShowForm(true)
     setEditingId(null)
     setViewingId(null)
@@ -121,27 +140,11 @@ function App() {
     setEditingId(null)
   }
 
-  // Show login/register if not authenticated
-  if (!currentUser) {
-    return (
-      <div className="app">
-        <header className="app-header">
-          <h1>💍 Married Biodata Management</h1>
-          <p>Create and manage biodata profiles for marriage proposals</p>
-        </header>
-        <div className="app-content">
-          {showRegister ? (
-            <Register onRegister={handleRegister} onSwitchToLogin={() => setShowRegister(false)} />
-          ) : (
-            <Login onLogin={handleLogin} onSwitchToRegister={() => setShowRegister(true)} />
-          )}
-        </div>
-      </div>
-    )
-  }
+  // Show login/register modal only when needed (for create/edit/delete)
+  const showLoginModal = showRegister || (currentUser === null && (showForm || editingId))
 
-  // Filter biodatas to show only current user's biodatas
-  const userBiodatas = biodatas.filter(b => b.userId === currentUser.id)
+  // Get biodatas to display - all for guests, user-specific for logged in users
+  const displayBiodatas = currentUser ? biodatas.filter(b => b.userId === currentUser.id) : biodatas
 
   return (
     <div className="app">
@@ -149,26 +152,80 @@ function App() {
         <div className="header-content">
           <div>
             <h1>💍 Married Biodata Management</h1>
-            <p>Welcome, {currentUser.name}! Create and manage your biodata profile</p>
+            <p>
+              {currentUser 
+                ? `Welcome, ${currentUser.name}! Create and manage your biodata profile`
+                : 'Browse biodata profiles for marriage proposals'
+              }
+            </p>
           </div>
-          <button className="btn btn-secondary logout-btn" onClick={handleLogout}>
-            🚪 Logout
-          </button>
+          <div className="header-actions">
+            {currentUser ? (
+              <button className="btn btn-secondary logout-btn" onClick={handleLogout}>
+                🚪 Logout
+              </button>
+            ) : (
+              <button 
+                className="btn btn-primary login-btn" 
+                onClick={() => setShowRegister(true)}
+              >
+                🔐 Login / Register
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
       <div className="app-content">
-        {!showForm && !viewingId && (
-          <div className="action-bar">
-            <button className="btn btn-primary" onClick={handleNew}>
-              + Create New Biodata
-            </button>
+        {/* Login/Register Modal */}
+        {showLoginModal && (
+          <div className="modal-overlay" onClick={() => setShowRegister(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              {showRegister ? (
+                <Register 
+                  onRegister={(user) => {
+                    handleRegister(user)
+                    setShowRegister(false)
+                  }} 
+                  onSwitchToLogin={() => setShowRegister(false)} 
+                />
+              ) : (
+                <Login 
+                  onLogin={(user) => {
+                    handleLogin(user)
+                    setShowRegister(false)
+                  }} 
+                  onSwitchToRegister={() => setShowRegister(true)} 
+                />
+              )}
+              <button 
+                className="modal-close" 
+                onClick={() => setShowRegister(false)}
+                title="Close"
+              >
+                ✕
+              </button>
+            </div>
           </div>
         )}
 
-        {showForm && (
+        {!showForm && !viewingId && (
+          <div className="action-bar">
+            {currentUser ? (
+              <button className="btn btn-primary" onClick={handleNew}>
+                + Create New Biodata
+              </button>
+            ) : (
+              <div className="guest-message">
+                <p>💡 Want to create or manage biodata? <span className="link" onClick={() => setShowRegister(true)}>Login or Register</span></p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {showForm && currentUser && (
           <BiodataForm
-            biodata={editingId ? userBiodatas.find(b => b.id === editingId) : null}
+            biodata={editingId ? displayBiodatas.find(b => b.id === editingId) : null}
             onSubmit={editingId ? (data) => handleUpdate(editingId, data) : handleCreate}
             onCancel={handleCancel}
           />
@@ -176,7 +233,7 @@ function App() {
 
         {!showForm && !viewingId && (
           <BiodataList
-            biodatas={userBiodatas}
+            biodatas={displayBiodatas}
             onEdit={handleEdit}
             onDelete={handleDelete}
             onView={handleView}
@@ -186,11 +243,12 @@ function App() {
 
         {viewingId && (
           <BiodataView
-            biodata={userBiodatas.find(b => b.id === viewingId)}
+            biodata={displayBiodatas.find(b => b.id === viewingId)}
             onBack={() => setViewingId(null)}
             onEdit={() => handleEdit(viewingId)}
             onDelete={() => handleDelete(viewingId)}
             currentUser={currentUser}
+            showBackButton={displayBiodatas.length > 1}
           />
         )}
       </div>

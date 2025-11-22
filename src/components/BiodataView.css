@@ -11,6 +11,17 @@
   gap: 15px;
 }
 
+.guest-edit-hint {
+  color: #667eea;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+  padding: 8px 15px;
+  background: #f8f9ff;
+  border-radius: 8px;
+  border: 2px solid #667eea;
+}
+
 .view-actions {
   display: flex;
   gap: 10px;
